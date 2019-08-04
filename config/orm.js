@@ -10,13 +10,12 @@ function createQmarks(num) {
   return arr.toString();
 }
 
-function translateSql(obj) {
+function translateSql(ob) {
   var arr = [];
   for (var key in ob){
-    var ob;
     var value = ob[key];
     if(Object.hasOwnProperty.call(ob, key)){
-      if(typeof value === string && value.indexOf(" ") >= 0){
+      if(typeof value === "string" && value.indexOf(" ") >= 0){
         value = "'" + value + "'";
       }
       arr.push(key + "=" + "value");
@@ -36,12 +35,19 @@ var orm = {
       cb(res);
     });
   },
-  insertOne: function(table, cols, vals, cb){
-    var dbQuery = "INSERT INTO " + table + " (" + cols.toString() + ") " + "VALUES (" + createQmarks(vals.length) + ") ";
+  insertOne: function(table, cols, vals, cb) {
+    var dbQuery =
+      "INSERT INTO " +
+      table +
+      " (" +
+      cols.toString() +
+      ") " +
+      "VALUES (" +
+      createQmarks(vals.length) +
+      ") ";
 
     console.log(dbQuery);
-
-    connection.query(dbQuery, function(err, res){
+    connection.query(dbQuery, vals, function(err, res) {
       if (err) {
         throw err;
       }
